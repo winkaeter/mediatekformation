@@ -30,7 +30,6 @@ class PlaylistRepository extends ServiceEntityRepository
     
     /**
      * Retourne toutes les playlists triées sur le nom de la playlist
-     * @param type $champ
      * @param string $ordre
      * @return Playlist[]
      */
@@ -46,9 +45,9 @@ class PlaylistRepository extends ServiceEntityRepository
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
-     * @param type $champ
-     * @param type $valeur
-     * @param type $table si $champ dans une autre table
+     * @param string $champ
+     * @param string $valeur
+     * @param string $table si $champ dans une autre table
      * @return Playlist[]
      */
     public function findByContainValue($champ, $valeur, $table=""): array{
@@ -76,5 +75,37 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->getResult();
         }
     }
-    
+
+    /**
+     * Retourne toutes les playlists triées sur le nombre de résultats par playlist
+     * @param string $ordre
+     * @return Playlist[]
+     */
+    public function findAllOrderByResultNb($ordre){
+        return $this->createQueryBuilder('p')
+            ->select('p', 'COUNT(f.id) AS HIDDEN nbrFormations')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('nbrFormations', $ordre)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Renvoie le nombre de formations pour une playlist donnée
+     * @param Playlist $playlist
+     * @return int
+     */
+    public function countFormationsByPlaylist(Playlist $playlist): int
+    {
+        $nb = $this->createQueryBuilder('p')
+            ->select('COUNT(f.id)')
+            ->leftJoin('p.formations', 'f')
+            ->where('p = :playlist')
+            ->setParameter('playlist', $playlist)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $nb;
+    }
 }
