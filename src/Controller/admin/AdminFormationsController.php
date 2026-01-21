@@ -62,7 +62,7 @@ class AdminFormationsController extends AbstractController
 
     #[Route('/admin/creerFormation', name: 'admin.creerFormation')]
     public function afficherCreerFormation(Request $request) : Response{
-        $formation = new Formation;
+        $formation = new Formation();
         $formCreateFormation = $this->createForm(FormationType::class, $formation);
         $formCreateFormation->handleRequest($request);
 
@@ -74,6 +74,24 @@ class AdminFormationsController extends AbstractController
 
         return $this->render('pages/admin/admin.addFormation.html.twig', [
             'formCreateFormation'=> $formCreateFormation->createView()
+        ]);
+    }
+
+    #[Route('admin/formations/modifier/{id}', name: 'admin.formations.modifier')]
+    public function modifier(Request $request, int $id){
+        $formation = $this->formationRepository->find($id);
+
+        $formModifierFormation = $this->createForm(FormationType::class, $formation);
+        $formModifierFormation->handleRequest($request);
+
+        if($formModifierFormation->isSubmitted() && $formModifierFormation->isValid()){
+            $this->formationRepository->add($formation);
+            $this->addFlash('success', 'La formation a bien été créée !');
+            return $this->redirectToRoute('admin.formations');
+        }
+
+        return $this->render('pages/admin/admin.addFormation.html.twig', [
+            'formCreateFormation'=> $formModifierFormation->createView()
         ]);
     }
 
