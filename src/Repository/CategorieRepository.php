@@ -44,4 +44,20 @@ class CategorieRepository extends ServiceEntityRepository
                 ->getResult();
     }
     
+    /**
+     * Compte le nombre de formations pour une catégorie donnée
+     * @param Categorie $categorie
+     * @return int
+     */
+    public function countFormationsByCategorie(Categorie $categorie): int
+    {
+        return (int) $this->createQueryBuilder('c')
+            ->select('COUNT(f.id)')
+            ->join('c.formations', 'f')
+            ->where('c.id = :id')
+            ->setParameter('id', $categorie->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    
 }

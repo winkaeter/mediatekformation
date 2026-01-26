@@ -13,13 +13,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('accueil') }}">Accueil</a>
+                        <a class="nav-link" href="{{ path('admin.formations') }}">Formations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('formations') }}">Formations</a>
+                        <a class="nav-link" href="{{ path('admin.playlists') }}">Playlists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('playlists') }}">Playlists</a>
+                        <a class="nav-link" href="{{ path('admin.categories') }}">Catégories</a>
                     </li>                    
                 </ul>
             </div>
@@ -30,6 +30,8 @@
 {% block footer %}
     <div class="container text-center">
         <footer>
+            <hr>
+            <a href="{{ path('app_logout') }}">Se déconnecter</a>
             <hr>
             <p><small><i>
                 Consultez nos <a class="link-secondary" href="{{ path('cgu') }}">Conditions Générales d'Utilisation</a>
