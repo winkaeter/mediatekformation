@@ -62,7 +62,7 @@ class AdminCategoriesController extends AbstractController
 
             $this->addFlash('success', 'Catégorie ajoutée !');
         }
-
+//
         return $this->redirectToRoute('admin.categories');
     }
 }
