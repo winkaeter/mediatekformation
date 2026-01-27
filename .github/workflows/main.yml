@@ -29,3 +29,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/api
+          
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-doc-api
+          path: ./docs/api # Le dossier où phpDoc a généré l'HTML
