@@ -23,12 +23,6 @@ jobs:
         run: phpdoc -d ./src -t ./docs/api
         # -d : dossier source
         # -t : dossier de destination pour la doc générée
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/api
           
       - name: Upload Documentation
         uses: actions/upload-artifact@v4
