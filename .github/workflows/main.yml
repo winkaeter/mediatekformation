@@ -1,0 +1,31 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  phpdoc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: phpdoc # Installe automatiquement phpDocumentor
+
+      - name: Run phpDocumentor
+        run: phpdoc -d ./src -t ./docs/api
+        # -d : dossier source
+        # -t : dossier de destination pour la doc générée
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/api
