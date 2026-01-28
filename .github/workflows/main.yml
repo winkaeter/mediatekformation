@@ -1,0 +1,31 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  phpdoc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: phpdoc # Installe automatiquement phpDocumentor
+
+      - name: Run phpDocumentor
+        run: phpdoc -d ./src -t ./docs/api
+        # -d : dossier source
+        # -t : dossier de destination pour la doc générée
+          
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-doc-api
+          path: ./docs/api # Le dossier où phpDoc a généré l'HTML

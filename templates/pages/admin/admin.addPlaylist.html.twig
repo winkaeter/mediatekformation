@@ -1,0 +1,22 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    {{ form_start(formModifierPlaylist) }}
+        <div class="row mt-3">
+            <div class="col">
+                {{ form_row(formModifierPlaylist.name) }}
+            </div>
+            <div class="col">
+                {{ form_row(formModifierPlaylist.description) }}
+            </div>
+        </div>
+    {{ form_end(formModifierPlaylist) }}
+    {% if formations %}
+        <br>
+        <h3>Liste des formations dans la playlist :</h3>
+        <ul>
+            {% for formation in formations %}
+                <li>{{ formation.title }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

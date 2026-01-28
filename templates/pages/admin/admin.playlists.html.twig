@@ -1,0 +1,63 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block body %}
+    <table class="table table-stripped">
+        <thead>
+            <tr>
+                <th>
+                    Nom
+                    <a href="{{ path('admin.playlists.sort', {champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true"><</a>
+                    <a href="{{ path('admin.playlists.sort', {champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm active" role="button" aria-pressed="true">></a>
+                    <form class="form-inline mt-1" method="POST" action="{{ path('adminplaylists.findallcontain', {champ:'name'}) }}">
+                        <div class="form-group mr-1 mb-2">
+                            <input type="text" class="sm" name="recherche" 
+                                   value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
+                            <button type="submit" class="btn btn-info mb-2 btn-sm">filtrer</button>
+                        </div>
+                    </form>
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Catégories
+                </th>
+                <th>
+                    Nombre de formations
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in playlists %}
+                <tr>
+                    <td>
+                        {{ playlist.name }}
+                    </td>
+                    <td>
+                        {{ playlist.description }}
+                    </td>
+                    <td>
+                        {% set categories = playlist.categoriesplaylist %}
+                            {% if categories|length > 0  %}
+                                {% for c in 0..categories|length-1 %}
+                                    &nbsp;{{ categories[c] }}                                  
+                                {% endfor %}
+                            {% endif %}
+                    </td>
+                    <td>
+                        {{ playlist.getCountFormation() }}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin.playlists.remove', {'id': playlist.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes vous sûr de vouloir supprimer {{ playlist.name }} ?')">Supprimer</a>
+                        <a href="{{ path('admin.playlists.modifier', {'id': playlist.id}) }}" class="btn btn-danger">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin.playlists.create') }}" class="btn btn-primary">Ajouter une playlist</a>
+{% endblock %}

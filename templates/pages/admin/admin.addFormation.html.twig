@@ -1,0 +1,25 @@
+{% extends "baseadmin.html.twig" %}
+{% block body %}
+    {{ form_start(formCreateFormation) }}
+        <div class="row mt-3">
+            <div class="col">
+                {{ form_row(formCreateFormation.title) }}
+            </div>
+            <div class="col">
+                {{ form_row(formCreateFormation.description) }}
+            </div>
+            <div class="col">
+                {{ form_row(formCreateFormation.playlist) }}
+            </div>
+            <div class="col">
+                {{ form_row(formCreateFormation.categories) }}
+            </div>
+            <div class="col">
+                {{ form_row(formCreateFormation.videoId) }}
+            </div>
+            <div class="col">
+                {{ form_row(formCreateFormation.publishedAt) }}
+            </div>
+        </div>
+    {{ form_end(formCreateFormation) }}
+{% endblock %}

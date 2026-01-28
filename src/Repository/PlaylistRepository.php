@@ -30,8 +30,7 @@ class PlaylistRepository extends ServiceEntityRepository
     
     /**
      * Retourne toutes les playlists triées sur le nom de la playlist
-     * @param type $champ
-     * @param type $ordre
+     * @param string $ordre
      * @return Playlist[]
      */
     public function findAllOrderByName($ordre): array{
@@ -40,22 +39,22 @@ class PlaylistRepository extends ServiceEntityRepository
                 ->groupBy('p.id')
                 ->orderBy('p.name', $ordre)
                 ->getQuery()
-                ->getResult();       
-    } 
+                ->getResult();
+    }
 	
     /**
      * Enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
-     * @param type $champ
-     * @param type $valeur
-     * @param type $table si $champ dans une autre table
+     * @param string $champ
+     * @param string $valeur
+     * @param string $table si $champ dans une autre table
      * @return Playlist[]
      */
     public function findByContainValue($champ, $valeur, $table=""): array{
         if($valeur==""){
             return $this->findAllOrderByName('ASC');
-        }    
-        if($table==""){      
+        }
+        if($table==""){
             return $this->createQueryBuilder('p')
                     ->leftjoin('p.formations', 'f')
                     ->where('p.'.$champ.' LIKE :valeur')
@@ -63,8 +62,8 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->groupBy('p.id')
                     ->orderBy('p.name', 'ASC')
                     ->getQuery()
-                    ->getResult();              
-        }else{   
+                    ->getResult();
+        }else{
             return $this->createQueryBuilder('p')
                     ->leftjoin('p.formations', 'f')
                     ->leftjoin('f.categories', 'c')
@@ -73,8 +72,40 @@ class PlaylistRepository extends ServiceEntityRepository
                     ->groupBy('p.id')
                     ->orderBy('p.name', 'ASC')
                     ->getQuery()
-                    ->getResult();              
-        }           
-    }    
-    
+                    ->getResult();
+        }
+    }
+
+    /**
+     * Retourne toutes les playlists triées sur le nombre de résultats par playlist
+     * @param string $ordre
+     * @return Playlist[]
+     */
+    public function findAllOrderByResultNb($ordre){
+        return $this->createQueryBuilder('p')
+            ->select('p', 'COUNT(f.id) AS HIDDEN nbrFormations')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('nbrFormations', $ordre)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Renvoie le nombre de formations pour une playlist donnée
+     * @param Playlist $playlist
+     * @return int
+     */
+    public function countFormationsByPlaylist(Playlist $playlist): int
+    {
+        $nb = $this->createQueryBuilder('p')
+            ->select('COUNT(f.id)')
+            ->leftJoin('p.formations', 'f')
+            ->where('p = :playlist')
+            ->setParameter('playlist', $playlist)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return (int) $nb;
+    }
 }
