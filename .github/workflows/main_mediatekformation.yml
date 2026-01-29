@@ -3,21 +3,29 @@ on:
     branches:
       - main
   workflow_dispatch:
+
 name: Deploy website on push
+
 jobs:
   web-deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Get latest code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4 # Version à jour
 
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
           server: waws-prod-par-019.ftp.azurewebsites.windows.net
           server-dir: /site/wwwroot/
-          username: MediatekFormation\$MediatekFormation
-          password: WyQq4m7L6gnW61BXk80sAry9hxw5KWT8pe82BZboYvSv4hxaXX4QAB1rWsH4
+          # Utilisation de guillemets pour éviter les erreurs avec le caractère '$'
+          username: 'MediatekFormation\$MediatekFormation'
+          # Utilisation d'un secret GitHub (indispensable pour la sécurité)
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Force l'utilisation du FTPS pour éviter le ECONNRESET
+          protocol: ftps
+          # Optionnel : augmente la tolérance aux délais réseau
+          timeout: 60000
 
 
