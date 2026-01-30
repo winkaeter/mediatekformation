@@ -1,6 +1,8 @@
 # MediatekFormation
-## Readme original
-Voici le lien du repository original : https://github.com/CNED-SLAM/mediatekformation
+## Infos :
+- Voici le lien du repository original : https://github.com/CNED-SLAM/mediatekformation
+- Lien pour accéder au site en ligne : https://mediatekformation-atawfpftd0bubma9.francecentral-01.azurewebsites.net/ (Le site sera certainement mis hors ligne à partir de mars 2026 pour des raisons de coût)
+- [test de l'application en local](#test-de-lapplication-en-local)
 ## Présentation
 Ce site, développé avec Symfony 6.4, permet d'accéder aux vidéos d'auto-formation proposées par une chaîne de médiathèques et qui sont aussi accessibles sur YouTube.
 Le site est complet avec tous les tris et filtres fonctionnels de façon à faciliter la navigation sur le site par tous les utilisateurs.
@@ -59,3 +61,11 @@ Cette page permet de créer, supprimer et modifier des playlists. Les mêmes tri
 ![Page admin pour gérer les catégories](./readmeAssets/image-6.png)
 
 Cette page permet de créer et supprimer des catégories.
+
+### Test de l'application en local
+Vérifier que Composer, Git et Wamserver (ou équivalent) sont installés sur l'ordinateur.
+Télécharger le code et le dézipper dans www de Wampserver (ou dossier équivalent) puis renommer le dossier en "mediatekformation".
+Ouvrir une fenêtre de commandes en mode admin, se positionner dans le dossier du projet et taper "composer install" pour reconstituer le dossier vendor.
+Dans phpMyAdmin, se connecter à MySQL en root sans mot de passe et créer la BDD 'mediatekformation'.
+Récupérer le fichier backup_user.sql en racine du projet et l'utiliser pour remplir la BDD (si vous voulez mettre un login/pwd d'accès, il faut créer un utilisateur, lui donner les droits sur la BDD et il faut le préciser dans le fichier ".env" en racine du projet).
+De préférence, ouvrir l'application dans un IDE professionnel. L'adresse pour la lancer est : http://localhost/mediatekformation/public/index.php
